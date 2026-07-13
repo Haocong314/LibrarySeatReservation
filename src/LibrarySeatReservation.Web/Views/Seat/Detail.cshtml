@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "座位详情";
+}
+
+<div class="user-container">
+    <a href="@Url.Action("Index", "Seat")" class="text-decoration-none mb-3 d-block" style="color: var(--primary);">
+        &larr; 返回座位列表
+    </a>
+
+    <div class="user-card">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="mb-0">
+                <span class="seat-number-badge">@Model.SeatNumber</span>
+            </h5>
+            <span class="badge-status @(Model.Status == "Available" ? "badge-available" : "badge-disabled")">
+                @(Model.Status == "Available" ? "可用" : "停用")
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <p class="mb-1"><strong>区域：</strong>@Model.AreaName &nbsp; @Model.Floor</p>
+            <p class="mb-1">
+                <strong>设施：</strong>
+                @if (Model.HasPower) { <span class="text-success me-2">?~T~E有电源</span> }
+                else { <span class="text-muted me-2">无电源</span> }
+                @if (Model.HasLight) { <span class="text-success">?~T~E有台灯</span> }
+                else { <span class="text-muted">无台灯</span> }
+            </p>
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <p class="mb-1 text-muted"><strong>备注：</strong>@Model.Description</p>
+            }
+        </div>
+
+        <div class="mb-3">
+            <strong>今天已预约时段：</strong>
+            @if (Model.BookedTimeSlots.Count == 0)
+            {
+                <span class="text-muted">暂无</span>
+            }
+            else
+            {
+                <div class="mt-2">
+                    @foreach (var slot in Model.BookedTimeSlots)
+                    {
+                        <span class="badge rounded-pill bg-light text-dark border me-1">@slot</span>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (Model.Status == "Available")
+        {
+            <a href="@Url.Action("Create", "Reservation", new { seatId = Model.Id })"
+               class="btn btn-primary-custom w-100">
+                预约此座位
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-secondary w-100" disabled>此座位已停用</button>
+        }
+    </div>
+
+    <div class="bottom-safe"></div>
+</div>

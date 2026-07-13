@@ -1,0 +1,60 @@
+@using LibrarySeatReservation.Web.Models.ViewModel
+@model ReservationCreateViewModel
+@{
+    ViewData["Title"] = "提交预约";
+}
+
+<div class="user-container">
+    <a href="@Url.Action("Detail", "Seat", new { id = Model.SeatId })" class="text-decoration-none mb-3 d-block" style="color: var(--primary);">
+        &larr; 返回座位详情
+    </a>
+
+    <div class="user-card">
+        <h5 class="mb-3" style="color: var(--primary);">预约座位</h5>
+
+        <div class="mb-3">
+            <p class="mb-1"><strong>座位：</strong>@Model.SeatNumber (@Model.AreaName)</p>
+            <p class="mb-1"><strong>日期：</strong>@Model.Date.ToString("yyyy-MM-dd")</p>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger alert-custom">@Model.ErrorMessage</div>
+        }
+
+        @if (Model.AvailableTimeSlots.Count == 0)
+        {
+            <div class="alert alert-warning alert-custom">
+                今天该座位所有时段已全部被预约。
+            </div>
+        }
+        else
+        {
+            <form method="post">
+                <input type="hidden" name="seatId" value="@Model.SeatId" />
+                <input type="hidden" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">选择时段：</label>
+                    <div class="time-slot-list">
+                        @foreach (var slot in Model.AvailableTimeSlots)
+                        {
+                            var isSelected = slot == Model.SelectedTimeSlot;
+                            <label class="time-slot-item @(isSelected ? "selected" : "")">
+                                <input type="radio" name="timeSlot" value="@slot"
+                                       style="display:none;"
+                                       @(isSelected ? "checked" : "")
+                                       onchange="this.parentElement.click()" />
+                                @slot
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100">确认预约</button>
+            </form>
+        }
+    </div>
+
+    <div class="bottom-safe"></div>
+</div>

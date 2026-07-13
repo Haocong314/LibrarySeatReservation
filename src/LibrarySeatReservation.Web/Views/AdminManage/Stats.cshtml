@@ -1,0 +1,79 @@
+@using LibrarySeatReservation.Web.Models.ViewModel
+@model AdminStatsViewModel
+@{
+    ViewData["Title"] = "数据统计";
+}
+
+<div class="container-fluid py-3">
+    <h4 class="mb-4" style="color: var(--primary);">数据统计</h4>
+
+    <!-- 概览卡片 -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-number">@Model.TotalSeats</div>
+                <div class="stat-label">总座位数</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-number" style="color: var(--success);">@Model.AvailableSeats</div>
+                <div class="stat-label">可用座位</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-number" style="color: var(--primary);">@Model.TodayActiveReservations</div>
+                <div class="stat-label">今日有效预约</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-number" style="color: var(--danger);">@Model.TodayCancelledReservations</div>
+                <div class="stat-label">今日取消预约</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 各区域分布 -->
+    <div class="card shadow-sm" style="border-radius: var(--card-radius);">
+        <div class="card-body">
+            <h5 class="mb-3">各区域预约情况</h5>
+            @if (Model.AreaStats.Count == 0)
+            {
+                <div class="empty-state" style="padding: 24px;">
+                    <p>暂无数据</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>区域</th>
+                                <th>座位数</th>
+                                <th>今日有效预约</th>
+                                <th>使用率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var area in Model.AreaStats)
+                            {
+                                var usageRate = area.TotalSeats > 0
+                                    ? ((double)area.ActiveReservations / (area.TotalSeats * 7) * 100).ToString("F1")
+                                    : "0.0";
+                                <tr>
+                                    <td>@area.AreaName</td>
+                                    <td>@area.TotalSeats</td>
+                                    <td>@area.ActiveReservations</td>
+                                    <td>@usageRate%</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

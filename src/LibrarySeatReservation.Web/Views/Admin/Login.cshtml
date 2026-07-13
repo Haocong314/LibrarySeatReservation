@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "管理员登录";
+    Layout = "_Layout";
+}
+
+<div class="container" style="max-width: 420px; margin-top: 80px;">
+    <div class="card shadow-sm" style="border-radius: var(--card-radius);">
+        <div class="card-body p-4">
+            <h4 class="text-center mb-4" style="color: var(--primary);">图书馆管理后台</h4>
+            <p class="text-center text-muted mb-4">管理员登录</p>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger alert-custom">@ViewBag.Error</div>
+            }
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">用户名</label>
+                    <input type="text" name="username" class="form-control" placeholder="请输入管理员用户名"
+                           style="border-radius: var(--btn-radius);" required />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">密码</label>
+                    <input type="password" name="password" class="form-control" placeholder="请输入密码"
+                           style="border-radius: var(--btn-radius);" required />
+                </div>
+                <button type="submit" class="btn btn-primary-custom w-100">登录</button>
+            </form>
+        </div>
+    </div>
+    <p class="text-center text-muted mt-3" style="font-size:0.85rem;">演示账号：admin / 123456</p>
+</div>

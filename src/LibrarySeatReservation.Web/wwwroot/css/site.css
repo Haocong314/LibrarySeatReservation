@@ -1,0 +1,180 @@
+/* ===== 图书馆座位预约系统 - 自定义样式 ===== */
+
+/* 主色调：深蓝 #2c5f8a （校园服务感 + 安静学习感） */
+:root {
+    --primary: #2c5f8a;
+    --primary-light: #4a7fb5;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --info: #17a2b8;
+    --card-radius: 12px;
+    --btn-radius: 8px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+/* --- 用户端（手机优先） --- */
+.user-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+.user-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.seat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px var(--spacing-md);
+}
+
+.seat-number-badge {
+    background: var(--primary);
+    color: #fff;
+    border-radius: var(--btn-radius);
+    padding: 6px 14px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.status-available { color: var(--success); font-weight: 600; }
+.status-disabled { color: #999; }
+.status-active { color: var(--primary); }
+.status-cancelled { color: #999; text-decoration: line-through; }
+
+.btn-primary-custom {
+    background: var(--primary);
+    border: none;
+    border-radius: var(--btn-radius);
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.btn-primary-custom:hover { background: var(--primary-light); color: #fff; }
+
+.btn-outline-custom {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: var(--btn-radius);
+    padding: 8px 16px;
+    background: #fff;
+    font-weight: 500;
+}
+.btn-outline-custom:hover { background: var(--primary); color: #fff; }
+
+/* --- 管理端（桌面后台） --- */
+.admin-toolbar {
+    background: #f8f9fa;
+    border-radius: var(--card-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-card .stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* --- 通用 --- */
+.alert-custom {
+    border-radius: var(--btn-radius);
+    padding: var(--spacing-md);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 48px var(--spacing-md);
+    color: #999;
+}
+
+.empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.3;
+}
+
+/* 时间段选择 */
+.time-slot-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.time-slot-item {
+    border: 1px solid #ddd;
+    border-radius: var(--btn-radius);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+.time-slot-item.selected {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+.time-slot-item:hover:not(.selected) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* 标签徽章 */
+.badge-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.badge-active { background: #d4edda; color: #155724; }
+.badge-cancelled { background: #f8d7da; color: #721c24; }
+.badge-available { background: #d4edda; color: #155724; }
+.badge-disabled { background: #e2e3e5; color: #6c757d; }
+
+/* 底部安全留白 */
+.bottom-safe {
+    height: 60px;
+}
+
+/* 表格 */
+.table-custom th {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* 筛选表单 */
+.filter-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: end;
+}
+.filter-form .form-group {
+    flex: 1;
+    min-width: 150px;
+}

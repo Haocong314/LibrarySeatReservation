@@ -1,0 +1,11 @@
+﻿# Build
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+.vs/
+packages/
+node_modules/
+*.log
+*.tmp

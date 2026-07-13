@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "用户首页";
+}
+
+<div class="user-container">
+    <div class="user-card text-center">
+        <h4 class="mb-3" style="color: var(--primary);">图书馆座位预约</h4>
+        <p class="text-muted">请选择一个体验账号进入系统</p>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger alert-custom">@ViewBag.ErrorMessage</div>
+    }
+
+    @foreach (var user in Model)
+    {
+        <div class="user-card mb-2">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <strong>@user.DisplayName</strong>
+                    <span class="text-muted ms-2">@user.StudentId</span>
+                </div>
+                <form method="post" asp-action="SwitchUser">
+                    <input type="hidden" name="userId" value="@user.Id" />
+                    <button type="submit" class="btn btn-primary-custom btn-sm">进入</button>
+                </form>
+            </div>
+        </div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">&#128100;</div>
+            <p>暂无可用体验账号</p>
+        </div>
+    }
+
+    <div class="bottom-safe"></div>
+</div>

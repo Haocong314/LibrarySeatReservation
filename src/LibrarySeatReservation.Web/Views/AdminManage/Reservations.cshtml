@@ -1,0 +1,102 @@
+@{
+    ViewData["Title"] = "预约管理";
+}
+
+<div class="container-fluid py-3">
+    <h4 class="mb-3" style="color: var(--primary);">预约管理</h4>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-custom">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-custom">@TempData["ErrorMessage"]</div>
+    }
+
+    <!-- 筛选区 -->
+    <div class="admin-toolbar">
+        <form method="get" class="filter-form">
+            <div class="form-group">
+                <label class="form-label">日期</label>
+                <input type="date" name="date" class="form-control" value="@ViewBag.CurrentDate"
+                       style="border-radius: var(--btn-radius);" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">状态</label>
+                <select name="status" class="form-select" style="border-radius: var(--btn-radius);">
+                    <option value="">全部</option>
+                    <option value="Active" selected="@(ViewBag.CurrentStatus == "Active")}>已预约</option>
+                    <option value="Cancelled" selected="@(ViewBag.CurrentStatus == "Cancelled")}>已取消</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">关键词</label>
+                <input type="text" name="keyword" class="form-control" placeholder="学号/姓名/座位号"
+                       style="border-radius: var(--btn-radius);" />
+            </div>
+            <div class="form-group" style="flex: 0 0 auto;">
+                <button type="submit" class="btn btn-primary-custom">筛选</button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">&#128197;</div>
+            <p>暂无预约记录</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-custom">
+                <thead>
+                    <tr>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>座位</th>
+                        <th>区域</th>
+                        <th>日期</th>
+                        <th>时段</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var res in Model)
+                    {
+                        <tr>
+                            <td>@res.StudentId</td>
+                            <td>@res.UserName</td>
+                            <td>@res.SeatNumber</td>
+                            <td>@res.AreaName</td>
+                            <td>@res.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@res.TimeSlot</td>
+                            <td>
+                                <span class="badge-status @(res.Status == "Active" ? "badge-active" : "badge-cancelled")">
+                                    @(res.Status == "Active" ? "已预约" : "已取消")
+                                </span>
+                            </td>
+                            <td>
+                                @if (res.Status == "Active")
+                                {
+                                    <form method="post" asp-action="CancelReservation" class="d-inline"
+                                          onsubmit="return confirm('确定取消该预约？');">
+                                        <input type="hidden" name="id" value="@res.Id" />
+                                        <button class="btn btn-sm btn-outline-danger">取消预约</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "座位管理";
+}
+
+<div class="container-fluid py-3">
+    <h4 class="mb-3" style="color: var(--primary);">座位管理</h4>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-custom">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">&#128218;</div>
+            <p>暂无座位数据</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-custom">
+                <thead>
+                    <tr>
+                        <th>座位编号</th>
+                        <th>所属区域</th>
+                        <th>楼层</th>
+                        <th>状态</th>
+                        <th>设施</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var seat in Model)
+                    {
+                        <tr>
+                            <td><strong>@seat.SeatNumber</strong></td>
+                            <td>@seat.AreaName</td>
+                            <td>@seat.Floor</td>
+                            <td>
+                                <span class="badge-status @(seat.Status == "Available" ? "badge-available" : "badge-disabled")">
+                                    @(seat.Status == "Available" ? "可用" : "停用")
+                                </span>
+                            </td>
+                            <td>
+                                @(seat.HasPower ? "电源 " : "")
+                                @(seat.HasLight ? "台灯" : "")
+                                @(!seat.HasPower && !seat.HasLight ? "-" : "")
+                            </td>
+                            <td>
+                                <form method="post" asp-action="ToggleSeat" class="d-inline">
+                                    <input type="hidden" name="id" value="@seat.Id" />
+                                    <button class="btn btn-sm @(seat.Status == "Available" ? "btn-outline-warning" : "btn-outline-success")">
+                                        @(seat.Status == "Available" ? "停用" : "启用")
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
