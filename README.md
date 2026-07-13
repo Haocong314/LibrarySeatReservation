@@ -130,15 +130,15 @@ dotnet run
 
 ## 当前阶段
 
-**阶段 13a：用户端主链路开发（Sprint 1）** — Entity/Service/Controller/View 已完成字段对齐（中文化状态值、ReservationDate、Floor int），代码层面已就绪。待 .NET SDK 环境完成运行时端到端走查（T01-09）后进入阶段 13b 审计。
+**阶段 14a：管理端、权限与状态回流开发（Sprint 2）** — AdminService（登录验证/预约筛选/取消预约/座位管理/数据统计）、AdminController（登录/登出含 Session 守卫）、AdminManageController（EnsureAdmin 权限守护）、管理端 4 视图（P06-P09）、侧边栏布局（_AdminLayout）、状态回流（用户端即时可见管理端变更）。代码已对齐文档，待 .NET SDK 环境完成 T02-08 端到端走查后进入 14b 审计。
 
 ## 已实现范围（待各 Sprint 完成后更新）
 
 | Sprint | 范围 | 状态 |
 |--------|------|------|
 | Sprint 0 | 工程骨架搭建 | 🏁 已完成（阶段 12a） |
-| Sprint 1 | 用户端 5 页 + 预约核心链路 | 🔧 进行中（阶段 13a） |
-| Sprint 2 | 管理端 4 页 + 管理核心链路 | 📋 待开始 |
+| Sprint 1 | 用户端 5 页 + 预约核心链路 | ✅ 待验证（阶段 13a，代码已对齐） |
+| Sprint 2 | 管理端 4 页 + 管理核心链路 | ✅ 待验证（阶段 14a，代码已对齐） |
 | Sprint 3 | 完善与Bug修复 | 📋 待开始 |
 | Sprint 4 | 最终交付 | 📋 待开始 |
 

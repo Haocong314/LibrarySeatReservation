@@ -1,4 +1,5 @@
 ﻿@{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "预约管理";
 }
 
@@ -26,8 +27,16 @@
                 <label class="form-label">状态</label>
                 <select name="status" class="form-select" style="border-radius: var(--btn-radius);">
                     <option value="">全部</option>
-                    <option value="Active" selected="@(ViewBag.CurrentStatus == "已预约")}>已预约</option>
-                    <option value="Cancelled" selected="@(ViewBag.CurrentStatus == "已取消")}>已取消</option>
+                    @if ((string?)ViewBag.CurrentStatus == "已预约") {
+                        <option value="已预约" selected>已预约</option>
+                    } else {
+                        <option value="已预约">已预约</option>
+                    }
+                    @if ((string?)ViewBag.CurrentStatus == "已取消") {
+                        <option value="已取消" selected>已取消</option>
+                    } else {
+                        <option value="已取消">已取消</option>
+                    }
                 </select>
             </div>
             <div class="form-group">

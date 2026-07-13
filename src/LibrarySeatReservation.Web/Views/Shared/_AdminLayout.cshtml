@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 图书馆座位预约管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 220px; background: #1e293b; color: #cbd5e1; flex-shrink: 0; padding-top: 16px; }
+        .admin-sidebar .brand { padding: 0 16px 16px; font-size: 16px; font-weight: 600; color: #f1f5f9; border-bottom: 1px solid #334155; margin-bottom: 8px; }
+        .admin-sidebar .nav-item { display: block; padding: 10px 16px; color: #cbd5e1; text-decoration: none; font-size: 14px; transition: background .15s; }
+        .admin-sidebar .nav-item:hover { background: #334155; color: #f1f5f9; }
+        .admin-sidebar .nav-item.active { background: #3b82f6; color: #fff; font-weight: 600; }
+        .admin-sidebar .nav-separator { border-top: 1px solid #334155; margin: 8px 0; }
+        .admin-main { flex: 1; overflow-x: auto; background: #f8fafc; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="brand">&#128218; 图书馆管理</div>
+            <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Reservations" ? "active" : "")"
+               href="/AdminManage/Reservations">&#128197; 预约管理</a>
+            <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Seats" ? "active" : "")"
+               href="/AdminManage/Seats">&#128209; 座位管理</a>
+            <a class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Stats" ? "active" : "")"
+               href="/AdminManage/Stats">&#128200; 数据统计</a>
+            <div class="nav-separator"></div>
+            <a class="nav-item" href="/Admin/Logout">&#128682; 退出登录</a>
+        </aside>
+
+        <main class="admin-main">
+            <div class="container-fluid py-3">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
