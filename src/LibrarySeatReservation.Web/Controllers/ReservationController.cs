@@ -54,12 +54,12 @@ public class ReservationController : Controller
         if (check != null) return check;
 
         var user = _userService.GetCurrentUser(HttpContext)!;
+        var detail = await _seatService.GetSeatDetailAsync(seatId, date);
         var (success, error) = await _reservationService.CreateReservationAsync(user.Id, seatId, date, timeSlot);
 
         if (!success)
         {
             var availableSlots = await _seatService.GetAvailableTimeSlotsAsync(seatId, date);
-            var detail = await _seatService.GetSeatDetailAsync(seatId, date);
             return View(new Models.ViewModel.ReservationCreateViewModel
             {
                 SeatId = seatId,
@@ -72,7 +72,7 @@ public class ReservationController : Controller
             });
         }
 
-        TempData["SuccessMessage"] = $"已成功预约 {detail?.SeatNumber} {date:yyyy-MM-dd} {timeSlot}";
+        TempData["SuccessMessage"] = $"已成功预约 {detail?.SeatNumber ?? ""} {date:yyyy-MM-dd} {timeSlot}";
         return RedirectToAction("MyReservations");
     }
 

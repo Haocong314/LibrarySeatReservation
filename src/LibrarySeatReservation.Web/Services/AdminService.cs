@@ -36,7 +36,7 @@ public class AdminService : IAdminService
             .AsQueryable();
 
         if (date.HasValue)
-            query = query.Where(r => r.Date == date.Value.Date);
+            query = query.Where(r => r.ReservationDate == date.Value.Date);
         if (!string.IsNullOrEmpty(status))
             query = query.Where(r => r.Status == status);
         if (areaId.HasValue)
@@ -47,7 +47,7 @@ public class AdminService : IAdminService
                 r.User.DisplayName.Contains(keyword) ||
                 r.Seat.SeatNumber.Contains(keyword));
 
-        return await query.OrderByDescending(r => r.Date)
+        return await query.OrderByDescending(r => r.ReservationDate)
             .ThenBy(r => r.TimeSlot)
             .Select(r => new AdminReservationItem
             {
@@ -56,7 +56,7 @@ public class AdminService : IAdminService
                 StudentId = r.User.StudentId,
                 SeatNumber = r.Seat.SeatNumber,
                 AreaName = r.Seat.Area.Name,
-                Date = r.Date,
+                ReservationDate = r.ReservationDate,
                 TimeSlot = r.TimeSlot,
                 Status = r.Status,
                 CreatedAt = r.CreatedAt
@@ -67,9 +67,9 @@ public class AdminService : IAdminService
     {
         var res = await _db.Reservations.FindAsync(reservationId);
         if (res == null) return (false, "预约记录不存在。");
-        if (res.Status == "Cancelled") return (false, "该预约已取消。");
+        if (res.Status == "已取消") return (false, "该预约已取消。");
 
-        res.Status = "Cancelled";
+        res.Status = "已取消";
         res.CancelledAt = DateTime.Now;
         await _db.SaveChangesAsync();
         return (true, "");
@@ -96,7 +96,7 @@ public class AdminService : IAdminService
         var seat = await _db.Seats.FindAsync(seatId);
         if (seat == null) return (false, "座位不存在。");
 
-        seat.Status = seat.Status == "Available" ? "Disabled" : "Available";
+        seat.Status = seat.Status == "可用" ? "停用" : "可用";
         await _db.SaveChangesAsync();
         return (true, "");
     }
@@ -107,14 +107,14 @@ public class AdminService : IAdminService
         return new AdminStatsViewModel
         {
             TotalSeats = await _db.Seats.CountAsync(),
-            AvailableSeats = await _db.Seats.CountAsync(s => s.Status == "Available"),
-            TodayActiveReservations = await _db.Reservations.CountAsync(r => r.Date == today && r.Status == "Active"),
-            TodayCancelledReservations = await _db.Reservations.CountAsync(r => r.Date == today && r.Status == "Cancelled"),
+            AvailableSeats = await _db.Seats.CountAsync(s => s.Status == "可用"),
+            TodayActiveReservations = await _db.Reservations.CountAsync(r => r.ReservationDate == today && r.Status == "已预约"),
+            TodayCancelledReservations = await _db.Reservations.CountAsync(r => r.ReservationDate == today && r.Status == "已取消"),
             AreaStats = await _db.SeatAreas.Select(a => new AreaStatItem
             {
                 AreaName = a.Name,
                 TotalSeats = a.Seats.Count,
-                ActiveReservations = a.Seats.Sum(s => s.Reservations.Count(r => r.Date == today && r.Status == "Active"))
+                ActiveReservations = a.Seats.Sum(s => s.Reservations.Count(r => r.ReservationDate == today && r.Status == "已预约"))
             }).ToListAsync()
         };
     }

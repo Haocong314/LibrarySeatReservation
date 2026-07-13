@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "我的预约";
 }
 
@@ -20,7 +20,7 @@
     @if (Model.Count == 0)
     {
         <div class="empty-state">
-            <div class="empty-icon">?~@~Z</div>
+            <div class="empty-icon">&#128197;</div>
             <p>还没有预约记录</p>
             <a href="@Url.Action("Index", "Seat")" class="btn btn-primary-custom btn-sm mt-2">去预约</a>
         </div>
@@ -34,13 +34,13 @@
                     <div>
                         <div class="fw-bold">@res.SeatNumber <span class="text-muted fw-normal">@res.AreaName</span></div>
                         <div class="text-muted" style="font-size:0.9rem;">
-                            @res.Date.ToString("yyyy-MM-dd") &nbsp; @res.TimeSlot
+                            @res.ReservationDate.ToString("yyyy-MM-dd") &nbsp; @res.TimeSlot
                         </div>
-                        <span class="badge-status mt-1 @(res.Status == "Active" ? "badge-active" : "badge-cancelled")">
-                            @(res.Status == "Active" ? "已预约" : "已取消")
+                        <span class="badge-status mt-1 @(res.Status == "已预约" ? "badge-active" : "badge-cancelled")">
+                            @res.Status
                         </span>
                     </div>
-                    @if (res.Status == "Active")
+                    @if (res.Status == "已预约")
                     {
                         <form method="post" asp-action="Cancel" class="ms-2" onsubmit="return confirm('确定要取消这个预约吗？');">
                             <input type="hidden" name="id" value="@res.Id" />

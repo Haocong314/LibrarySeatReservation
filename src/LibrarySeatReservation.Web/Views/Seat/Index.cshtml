@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "座位列表";
 }
 
@@ -13,7 +13,7 @@
                     foreach (var area in ViewBag.Areas)
                     {
                         var selected = (int?)ViewBag.SelectedAreaId == area.Id ? "selected" : "";
-                        <option value="@area.Id" selected="@selected">@area.Name（@area.Floor）</option>
+                        <option value="@area.Id" selected="@selected">@area.Name（@(area.Floor)F）</option>
                     }
                 }
             </select>
@@ -34,14 +34,14 @@
             <div class="user-card seat-card">
                 <div>
                     <span class="seat-number-badge">@seat.SeatNumber</span>
-                    <span class="ms-2 text-muted">@seat.AreaName @seat.Floor</span>
-                    <span class="ms-2 badge-status @(seat.Status == "Available" ? "badge-available" : "badge-disabled")">
-                        @(seat.Status == "Available" ? "可用" : "停用")
+                    <span class="ms-2 text-muted">@seat.AreaName @(seat.Floor)F</span>
+                    <span class="ms-2 badge-status @(seat.Status == "可用" ? "badge-available" : "badge-disabled")">
+                        @seat.Status
                     </span>
                 </div>
                 <a href="@Url.Action("Detail", "Seat", new { id = seat.Id })"
-                   class="btn @(seat.Status == "Available" ? "btn-primary-custom" : "btn-outline-custom") btn-sm">
-                    @(seat.Status == "Available" ? "查看" : "详情")
+                   class="btn @(seat.Status == "可用" ? "btn-primary-custom" : "btn-outline-custom") btn-sm">
+                    @(seat.Status == "可用" ? "查看" : "详情")
                 </a>
             </div>
         }

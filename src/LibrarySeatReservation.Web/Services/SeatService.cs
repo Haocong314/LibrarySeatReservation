@@ -30,7 +30,7 @@ public class SeatService : ISeatService
             Status = s.Status,
             HasPower = s.HasPower,
             HasLight = s.HasLight,
-            ActiveReservationCount = s.Reservations.Count(r => r.Status == "Active" && r.Date == DateTime.Today)
+            ActiveReservationCount = s.Reservations.Count(r => r.Status == "已预约" && r.ReservationDate == DateTime.Today)
         }).OrderBy(s => s.AreaName).ThenBy(s => s.SeatNumber).ToListAsync();
     }
 
@@ -40,7 +40,7 @@ public class SeatService : ISeatService
         if (seat == null) return null;
 
         var bookedSlots = await _db.Reservations
-            .Where(r => r.SeatId == seatId && r.Date == date.Date && r.Status == "Active")
+            .Where(r => r.SeatId == seatId && r.ReservationDate == date.Date && r.Status == "已预约")
             .Select(r => r.TimeSlot)
             .ToListAsync();
 
@@ -61,7 +61,7 @@ public class SeatService : ISeatService
     public async Task<List<string>> GetAvailableTimeSlotsAsync(int seatId, DateTime date)
     {
         var booked = await _db.Reservations
-            .Where(r => r.SeatId == seatId && r.Date == date.Date && r.Status == "Active")
+            .Where(r => r.SeatId == seatId && r.ReservationDate == date.Date && r.Status == "已预约")
             .Select(r => r.TimeSlot)
             .ToListAsync();
 

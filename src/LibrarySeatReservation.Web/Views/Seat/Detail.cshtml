@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "座位详情";
 }
 
@@ -12,18 +12,18 @@
             <h5 class="mb-0">
                 <span class="seat-number-badge">@Model.SeatNumber</span>
             </h5>
-            <span class="badge-status @(Model.Status == "Available" ? "badge-available" : "badge-disabled")">
-                @(Model.Status == "Available" ? "可用" : "停用")
+            <span class="badge-status @(Model.Status == "可用" ? "badge-available" : "badge-disabled")">
+                @Model.Status
             </span>
         </div>
 
         <div class="mb-3">
-            <p class="mb-1"><strong>区域：</strong>@Model.AreaName &nbsp; @Model.Floor</p>
+            <p class="mb-1"><strong>区域：</strong>@Model.AreaName &nbsp; @(Model.Floor)F</p>
             <p class="mb-1">
                 <strong>设施：</strong>
-                @if (Model.HasPower) { <span class="text-success me-2">?~T~E有电源</span> }
+                @if (Model.HasPower) { <span class="text-success me-2">&#9889;有电源</span> }
                 else { <span class="text-muted me-2">无电源</span> }
-                @if (Model.HasLight) { <span class="text-success">?~T~E有台灯</span> }
+                @if (Model.HasLight) { <span class="text-success">&#9889;有台灯</span> }
                 else { <span class="text-muted">无台灯</span> }
             </p>
             @if (!string.IsNullOrEmpty(Model.Description))
@@ -49,7 +49,7 @@
             }
         </div>
 
-        @if (Model.Status == "Available")
+        @if (Model.Status == "可用")
         {
             <a href="@Url.Action("Create", "Reservation", new { seatId = Model.Id })"
                class="btn btn-primary-custom w-100">

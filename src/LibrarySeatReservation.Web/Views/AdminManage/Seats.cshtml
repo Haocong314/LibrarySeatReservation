@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "座位管理";
 }
 
@@ -37,10 +37,10 @@
                         <tr>
                             <td><strong>@seat.SeatNumber</strong></td>
                             <td>@seat.AreaName</td>
-                            <td>@seat.Floor</td>
+                            <td>@(seat.Floor)F</td>
                             <td>
-                                <span class="badge-status @(seat.Status == "Available" ? "badge-available" : "badge-disabled")">
-                                    @(seat.Status == "Available" ? "可用" : "停用")
+                                <span class="badge-status @(seat.Status == "可用" ? "badge-available" : "badge-disabled")">
+                                    @seat.Status
                                 </span>
                             </td>
                             <td>
@@ -51,8 +51,8 @@
                             <td>
                                 <form method="post" asp-action="ToggleSeat" class="d-inline">
                                     <input type="hidden" name="id" value="@seat.Id" />
-                                    <button class="btn btn-sm @(seat.Status == "Available" ? "btn-outline-warning" : "btn-outline-success")">
-                                        @(seat.Status == "Available" ? "停用" : "启用")
+                                    <button class="btn btn-sm @(seat.Status == "可用" ? "btn-outline-warning" : "btn-outline-success")">
+                                        @(seat.Status == "可用" ? "停用" : "启用")
                                     </button>
                                 </form>
                             </td>

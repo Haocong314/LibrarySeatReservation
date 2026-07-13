@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "预约管理";
 }
 
@@ -26,8 +26,8 @@
                 <label class="form-label">状态</label>
                 <select name="status" class="form-select" style="border-radius: var(--btn-radius);">
                     <option value="">全部</option>
-                    <option value="Active" selected="@(ViewBag.CurrentStatus == "Active")}>已预约</option>
-                    <option value="Cancelled" selected="@(ViewBag.CurrentStatus == "Cancelled")}>已取消</option>
+                    <option value="Active" selected="@(ViewBag.CurrentStatus == "已预约")}>已预约</option>
+                    <option value="Cancelled" selected="@(ViewBag.CurrentStatus == "已取消")}>已取消</option>
                 </select>
             </div>
             <div class="form-group">
@@ -72,15 +72,15 @@
                             <td>@res.UserName</td>
                             <td>@res.SeatNumber</td>
                             <td>@res.AreaName</td>
-                            <td>@res.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@res.ReservationDate.ToString("yyyy-MM-dd")</td>
                             <td>@res.TimeSlot</td>
                             <td>
-                                <span class="badge-status @(res.Status == "Active" ? "badge-active" : "badge-cancelled")">
-                                    @(res.Status == "Active" ? "已预约" : "已取消")
+                                <span class="badge-status @(res.Status == "已预约" ? "badge-active" : "badge-cancelled")">
+                                    @res.Status
                                 </span>
                             </td>
                             <td>
-                                @if (res.Status == "Active")
+                                @if (res.Status == "已预约")
                                 {
                                     <form method="post" asp-action="CancelReservation" class="d-inline"
                                           onsubmit="return confirm('确定取消该预约？');">

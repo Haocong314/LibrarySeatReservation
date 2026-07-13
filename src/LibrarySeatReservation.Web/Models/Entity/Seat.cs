@@ -5,7 +5,7 @@ public class Seat
     public int Id { get; set; }
     public string SeatNumber { get; set; } = string.Empty;
     public int AreaId { get; set; }
-    public string Status { get; set; } = "Available"; // Available / Disabled
+    public string Status { get; set; } = "可用"; // 可用 / 停用
     public bool HasPower { get; set; }
     public bool HasLight { get; set; }
     public string? Description { get; set; }

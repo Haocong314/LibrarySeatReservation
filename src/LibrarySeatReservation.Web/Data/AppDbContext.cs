@@ -33,26 +33,25 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<SeatArea>(e =>
         {
             e.Property(a => a.Name).HasMaxLength(50).IsRequired();
-            e.Property(a => a.Floor).HasMaxLength(20).IsRequired();
         });
 
         // Seat
         modelBuilder.Entity<Seat>(e =>
         {
             e.Property(s => s.SeatNumber).HasMaxLength(20).IsRequired();
-            e.Property(s => s.Status).HasMaxLength(20).IsRequired().HasDefaultValue("Available");
+            e.Property(s => s.Status).HasMaxLength(20).IsRequired().HasDefaultValue("可用");
             e.HasOne(s => s.Area).WithMany(a => a.Seats).HasForeignKey(s => s.AreaId);
         });
 
-        // Reservation — 预约冲突唯一约束: 同一座位 + 同一日期 + 同一时段 + Active 状态最多一条
+        // Reservation — 预约冲突唯一约束: 同一座位 + 同一日期 + 同一时段 + 已预约 状态最多一条
         modelBuilder.Entity<Reservation>(e =>
         {
             e.Property(r => r.TimeSlot).HasMaxLength(20).IsRequired();
-            e.Property(r => r.Status).HasMaxLength(20).IsRequired().HasDefaultValue("Active");
+            e.Property(r => r.Status).HasMaxLength(20).IsRequired().HasDefaultValue("已预约");
 
-            e.HasIndex(r => new { r.SeatId, r.Date, r.TimeSlot })
+            e.HasIndex(r => new { r.SeatId, r.ReservationDate, r.TimeSlot })
                 .IsUnique()
-                .HasFilter("[Status] = 'Active'");
+                .HasFilter("[Status] = N'已预约'");
 
             e.HasOne(r => r.User).WithMany(u => u.Reservations).HasForeignKey(r => r.UserId);
             e.HasOne(r => r.Seat).WithMany(s => s.Reservations).HasForeignKey(r => r.SeatId);

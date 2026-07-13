@@ -15,20 +15,20 @@ public class ReservationService : IReservationService
     {
         var seat = await _db.Seats.FindAsync(seatId);
         if (seat == null) return (false, "座位不存在。");
-        if (seat.Status == "Disabled") return (false, "该座位已停用。");
+        if (seat.Status == "停用") return (false, "该座位已停用。");
 
-        // 检查同一座位 + 同一日期 + 同一时段是否已有 Active 预约
+        // 检查同一座位 + 同一日期 + 同一时段是否已有"已预约"状态的预约
         var conflict = await _db.Reservations.AnyAsync(r =>
-            r.SeatId == seatId && r.Date == date.Date && r.TimeSlot == timeSlot && r.Status == "Active");
+            r.SeatId == seatId && r.ReservationDate == date.Date && r.TimeSlot == timeSlot && r.Status == "已预约");
         if (conflict) return (false, "该时段已被预约。");
 
         var reservation = new Reservation
         {
             UserId = userId,
             SeatId = seatId,
-            Date = date.Date,
+            ReservationDate = date.Date,
             TimeSlot = timeSlot,
-            Status = "Active",
+            Status = "已预约",
             CreatedAt = DateTime.Now
         };
         _db.Reservations.Add(reservation);
@@ -41,14 +41,14 @@ public class ReservationService : IReservationService
         return await _db.Reservations
             .Include(r => r.Seat).ThenInclude(s => s.Area)
             .Where(r => r.UserId == userId)
-            .OrderByDescending(r => r.Date)
+            .OrderByDescending(r => r.ReservationDate)
             .ThenBy(r => r.TimeSlot)
             .Select(r => new MyReservationItem
             {
                 Id = r.Id,
                 SeatNumber = r.Seat.SeatNumber,
                 AreaName = r.Seat.Area.Name,
-                Date = r.Date,
+                ReservationDate = r.ReservationDate,
                 TimeSlot = r.TimeSlot,
                 Status = r.Status,
                 CreatedAt = r.CreatedAt
@@ -60,9 +60,9 @@ public class ReservationService : IReservationService
         var res = await _db.Reservations.FindAsync(reservationId);
         if (res == null) return (false, "预约记录不存在。");
         if (res.UserId != userId) return (false, "无权取消他人预约。");
-        if (res.Status == "Cancelled") return (false, "该预约已取消。");
+        if (res.Status == "已取消") return (false, "该预约已取消。");
 
-        res.Status = "Cancelled";
+        res.Status = "已取消";
         res.CancelledAt = DateTime.Now;
         await _db.SaveChangesAsync();
         return (true, "");

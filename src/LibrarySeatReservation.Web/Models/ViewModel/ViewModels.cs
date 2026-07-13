@@ -43,7 +43,7 @@ public class MyReservationItem
     public int Id { get; set; }
     public string SeatNumber { get; set; } = string.Empty;
     public string AreaName { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
+    public DateTime ReservationDate { get; set; }
     public string TimeSlot { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
@@ -56,7 +56,7 @@ public class AdminReservationItem
     public string StudentId { get; set; } = string.Empty;
     public string SeatNumber { get; set; } = string.Empty;
     public string AreaName { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
+    public DateTime ReservationDate { get; set; }
     public string TimeSlot { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
@@ -67,7 +67,7 @@ public class AdminSeatItem
     public int Id { get; set; }
     public string SeatNumber { get; set; } = string.Empty;
     public string AreaName { get; set; } = string.Empty;
-    public string Floor { get; set; } = string.Empty;
+    public int Floor { get; set; }
     public string Status { get; set; } = string.Empty;
     public bool HasPower { get; set; }
     public bool HasLight { get; set; }

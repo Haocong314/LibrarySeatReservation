@@ -43,9 +43,9 @@ public static class DbInitializer
         if (!await db.SeatAreas.AnyAsync())
         {
             db.SeatAreas.AddRange(
-                new SeatArea { Name = "自习区A", Floor = "2F", SortOrder = 1 },
-                new SeatArea { Name = "自习区B", Floor = "3F", SortOrder = 2 },
-                new SeatArea { Name = "电子阅览区", Floor = "2F", SortOrder = 3 }
+                new SeatArea { Name = "A区 自习室", Floor = 3, SortOrder = 1 },
+                new SeatArea { Name = "B区 阅览区", Floor = 4, SortOrder = 2 },
+                new SeatArea { Name = "电子阅览区", Floor = 2, SortOrder = 3 }
             );
             await db.SaveChangesAsync();
         }
@@ -53,20 +53,20 @@ public static class DbInitializer
         // --- 座位（幂等：按 SeatNumber 检查） ---
         if (!await db.Seats.AnyAsync())
         {
-            var areaA = await db.SeatAreas.FirstAsync(a => a.Name == "自习区A");
-            var areaB = await db.SeatAreas.FirstAsync(a => a.Name == "自习区B");
+            var areaA = await db.SeatAreas.FirstAsync(a => a.Name == "A区 自习室");
+            var areaB = await db.SeatAreas.FirstAsync(a => a.Name == "B区 阅览区");
             var areaE = await db.SeatAreas.FirstAsync(a => a.Name == "电子阅览区");
 
             var seats = new List<Seat>();
             for (int i = 1; i <= 8; i++)
-                seats.Add(new Seat { SeatNumber = $"A-{i:D2}", AreaId = areaA.Id, HasPower = true, HasLight = true, Status = "Available" });
+                seats.Add(new Seat { SeatNumber = $"A-{i:D2}", AreaId = areaA.Id, HasPower = true, HasLight = true, Status = "可用" });
             for (int i = 1; i <= 8; i++)
-                seats.Add(new Seat { SeatNumber = $"B-{i:D2}", AreaId = areaB.Id, HasPower = true, HasLight = true, Status = "Available" });
+                seats.Add(new Seat { SeatNumber = $"B-{i:D2}", AreaId = areaB.Id, HasPower = true, HasLight = true, Status = "可用" });
             for (int i = 1; i <= 4; i++)
-                seats.Add(new Seat { SeatNumber = $"E-{i:D2}", AreaId = areaE.Id, HasPower = true, HasLight = false, Status = "Available" });
+                seats.Add(new Seat { SeatNumber = $"E-{i:D2}", AreaId = areaE.Id, HasPower = true, HasLight = false, Status = "可用" });
 
             // 停用一个座位用于演示
-            seats[0].Status = "Disabled";
+            seats[0].Status = "停用";
 
             db.Seats.AddRange(seats);
         }
